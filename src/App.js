@@ -22,7 +22,7 @@ function App() {
   };
 
   const addTodo = (text) => {
-    const newTodos = [...todos, text];
+    const newTodos = [...todos, {text, complete: false}];
     setTodos(newTodos);
     console.log(newTodos);
   };
@@ -32,6 +32,13 @@ function App() {
     newTodos.splice(index, 1);
     setTodos(newTodos);
   };
+
+  const completeTodo = index => {
+    const newTodos = [...todos]
+    newTodos[index].complete = !newTodos[index].complete
+    setTodos(newTodos);
+    console.log(newTodos)
+  }
   return (
     <div className="App">
       <Container>
@@ -57,8 +64,14 @@ function App() {
             {todos &&
               todos.map((todo, index) => (
                 <tr key={index}>
-                  <th className="text-left">{todo}</th>
+                  <th className="text-left" style={{ textDecoration: todo.complete ? "line-through" : ""}}>{todo.text}</th>
                   <td className="text-right">
+                    <Button
+                      color={todo.complete ? "secondary" : "success"}
+                      className="mr-2"
+                      onClick={() => completeTodo(index)}>
+                        {todo.complete ? "完了" : "未完了" }
+                      </Button>
                     <Button color="danger" onClick={() => removeTodo(index)}>
                       削除
                     </Button>
